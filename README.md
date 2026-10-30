@@ -2,6 +2,17 @@
 
 原生 Hermes 插件，参考 dsh-bili-whale 的“人设、阅读经历、日记、反馈”闭环，重新以 Python 编写；不复制 DSH 宿主代码，不修改 Hermes 核心。
 
+## 接力开发导航
+
+- [HANDOFF.md](HANDOFF.md)：从这里开始，当前完成度、功能基线、本机目录、未验证事项与下一步。
+- [ARCHITECTURE.md](ARCHITECTURE.md)：实际模块、状态机、统一派发、schema与权限边界。
+- [DEVELOPMENT](docs/DEVELOPMENT.md)：新机器环境、隔离测试、宿主安装验收和开发约定。
+- [OPERATIONS](docs/OPERATIONS.md)：凭据、暂停/中断、备份与远程浏览器安全运维。
+- [ROADMAP](docs/ROADMAP.md)：优先级、已知限制及逐项验收标准。
+- [AUDIT-INDEX](docs/AUDIT-INDEX.md)：历史报告/探针分类及未入Git证据说明。
+
+这些说明供源码仓库接力使用；安装脚本只复制运行载荷，不会将整套开发文档安装进profile。
+
 ## 本版范围
 
 - 8个模型工具：状态、视频搜索/元信息/评论/字幕、帧图、不可变草稿、发送、回读核查、分类型记忆、每日阅读周期。
@@ -112,12 +123,9 @@
     python -m venv .venv
     .venv/bin/python -m pip install -e '.[test]'
 
-完整测试还需要 Hermes 的 Python 导入环境（CLI/安装集成测试会启动子进程）。在 Hermes 当前 Python 下，把项目测试依赖目录显式加入子进程环境后运行：
+完整测试还需要 Hermes 的 Python 导入环境（CLI/安装集成测试会启动子进程）。请使用 [DEVELOPMENT 的隔离命令](docs/DEVELOPMENT.md)，其中会显式设置临时 HOME/HERMES_HOME/USERPROFILE、当前项目 TEST_SITE 与子进程 PYTHONPATH；不要只运行一个未隔离的 unittest 简写。
 
-    TEST_SITE=$(.venv/bin/python -c 'import sysconfig; print(sysconfig.get_path("purelib"))')
-    PYTHONPATH="$TEST_SITE:${PYTHONPATH:-}" python -m unittest discover -s tests -v
-
-验证结果见 VERIFICATION.md，原始执行输出见 TEST-RESULTS.txt 与 HOST-RESULTS.json。
+验证摘要见 VERIFICATION.md；可移植的隔离命令见 docs/DEVELOPMENT.md。原始 TEST-RESULTS.txt、HOST-RESULTS.json 及各阶段JSON/txt日志仅保留本机、不入Git；历史引用缺失的原因与探针适用范围见 docs/AUDIT-INDEX.md。
 
 发送前会重新检查审批有效期、暂停、预算、分享日期和请求间隔。旧请求因调度延迟与后续请求冲突时直接取消，不挤在同一时刻发送、不自动重试。收到 remote_id 后先持久化 unverified，再回读；回读期间中断仍可继续核查。若 POST 结果或落库失败导致 remote_id 未保存，保留不可重发状态，不能自动认定成功。
 

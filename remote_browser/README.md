@@ -34,7 +34,11 @@
 
 重新启动（服务器终端，当前Hermes Python可用时）：
 
-    systemd-run --user --unit=bili-browser-takeover --collect --property=RuntimeMaxSec=3700 --property=TimeoutStopSec=35 --property=UMask=0077 --property=KillMode=control-group --property=MemoryHigh=450M --property=MemoryMax=650M python /home/admin/projects/hermes-bilibili/remote_browser/session.py
+    systemd-run --user --unit=bili-browser-takeover --collect --property=RuntimeMaxSec=3700 --property=TimeoutStopSec=35 --property=UMask=0077 --property=KillMode=control-group --property=MemoryHigh=450M --property=MemoryMax=650M "$(python -c 'import sys; print(sys.executable)')" "$PWD/remote_browser/session.py"
+
+上面从当前仓库根执行，不再指向早期原开发副本。Chromium探测路径、Linux显示/UID目录和固定端口等限制仍在，迁移前看 [接力运维说明](../docs/OPERATIONS.md)。`verify_live.py`额外依赖websockets，不属于插件stdlib依赖；会请求当前画面，不要在输入密码/验证码时运行。
+
+服务的active状态是运行时事实，不随Git保存。本节“当前部署”为原机已验证配置，不表示克隆后服务自动启动；2026-10-30交接开始时两项辅助浏览器服务均已停止。
 
 ## 真实验证
 
