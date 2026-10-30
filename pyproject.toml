@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hermes-bilibili"
+version = "0.1.0"
+description = "Hermes-native Bilibili reading and operator-approved publishing"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = []
+
+[project.optional-dependencies]
+# Manifest consistency tests use the host's YAML format, not plugin runtime code.
+test = ["PyYAML>=6.0,<7"]
+
+[tool.setuptools.packages.find]
+include = ["hermes_bilibili*"]

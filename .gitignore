@@ -1,0 +1,35 @@
+__pycache__/
+*.py[cod]
+*.db
+*.db-*
+.env
+credentials*.json
+*.mp4
+build/
+dist/
+*.egg-info/
+.venv/
+
+# Credentials, browser profiles and local runtime data
+.env.*
+!.env.example
+*.pem
+*.key
+id_ed25519*
+id_rsa*
+*Cookies*
+*Login Data*
+*.sqlite
+*.sqlite-*
+*.log
+*.png
+*.jpg
+*.jpeg
+
+# Machine-specific execution evidence remains local
+HOST-RESULTS.json
+TEST-RESULTS.txt
+audits/**/*.json
+audits/**/*.txt
+remote_browser/*verification*.json
+remote_browser/review.json

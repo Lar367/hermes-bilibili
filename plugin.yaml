@@ -1,0 +1,38 @@
+name: hermes-bilibili
+version: 0.1.0
+description: Profile-isolated Bilibili reading, role journals and explicitly approved publishing with transactional safety gates.
+author: Hermes Agent
+provides_tools:
+  - bili_status
+  - bili_read
+  - bili_prepare
+  - bili_send
+  - bili_verify
+  - bili_memory
+  - bili_cycle
+  - bili_frames
+provides_hooks:
+  - pre_tool_call
+config_schema:
+  owner_mid: {type: str, default: '', label: '用户 B站 UID'}
+  writes_enabled: {type: bool, default: false, label: '允许批准后的外发', description: '仍需逐条草稿审批；关闭不影响读取。'}
+  read_daily: {type: int, default: 3000}
+  read_hourly: {type: int, default: 600}
+  write_daily: {type: int, default: 30}
+  write_hourly: {type: int, default: 12}
+  min_gap_seconds: {type: float, default: 1.5}
+  write_gap_seconds: {type: float, default: 120}
+  dm_gap_seconds: {type: float, default: 60}
+  share_daily: {type: int, default: 3, description: '硬上限3，只能调低。'}
+  min_score: {type: int, default: 13}
+  timezone: {type: str, default: Asia/Shanghai}
+  preferences: {type: list, default: []}
+  dislikes: {type: list, default: []}
+  windows: {type: list, default: [{start: '20:00', end: '23:00'}]}
+  skip_chance: {type: float, default: 0.3}
+  max_candidates: {type: int, default: 5}
+  persona_max_chars: {type: int, default: 6000}
+  cache_ttl_seconds: {type: int, default: 600}
+  sessdata: {type: secret, env: BILIBILI_SESSDATA, label: 'SESSDATA', description: '仅在 Hermes 安全凭据界面填写，切勿发给模型。'}
+  bili_jct: {type: secret, env: BILIBILI_JCT, label: 'bili_jct'}
+  buvid3: {type: secret, env: BILIBILI_BUVID3, label: 'buvid3'}
